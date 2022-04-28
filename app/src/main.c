@@ -143,7 +143,7 @@ void tap_handler(AccelAxisType accel, int32_t direction)
     case PlatformTypeBasalt:
       // color pebbles
       color_angry = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_COLOR_ANGRY); // create bitmap from image resource
-      bitmap_layer_set_bitmap(bitmap_layer, color_angry);
+      bitmap_layer_set_bitmap(bitmap_layer, color_angry); // set bitmap layer image
 
       if (current_bmp)
       {
