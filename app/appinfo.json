@@ -1,0 +1,46 @@
+{
+    "uuid": "133215f0-cf20-4c05-997b-3c9be5a64e5b",
+    "shortName": "Laptopman",
+    "longName": "Laptopman Face",
+    "companyName": "John Spahr",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "sdkVersion": "3",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
+    "watchapp": {
+        "watchface": true
+    },
+    "appKeys": {},
+    "resources": {
+        "media": [{
+                "file": "images/icon.PNG",
+                "menuIcon": true,
+                "name": "IMAGE_MONO_ICON",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/mono_laptopman.PNG",
+                "name": "IMAGE_MONO_LAPTOPMAN",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/mono_angry.PNG",
+                "name": "IMAGE_MONO_ANGRY",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/color_laptopman.PNG",
+                "name": "IMAGE_COLOR_LAPTOPMAN",
+                "type": "png"
+            },
+            {
+                "file": "images/color_angry.PNG",
+                "name": "IMAGE_COLOR_ANGRY",
+                "type": "png"
+            }
+        ]
+    }
+}
