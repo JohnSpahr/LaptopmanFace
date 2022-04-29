@@ -10,10 +10,9 @@
 #include <pebble.h>
 
 static Window *window;            // window object
+static TextLayer *s_time_layer;   // the clock (text layer)
 static BitmapLayer *bitmap_layer; // layer for display the bitmap
 static GBitmap *current_bmp;      // bitmap object
-static TextLayer *s_time_layer;   // the clock (text layer)
-
 static GBitmap *mono_laptopman;  // mono laptopman bitmap
 static GBitmap *color_laptopman; // color laptopman bitmap
 static GBitmap *mono_angry;      // mono angry laptopman bitmap
@@ -44,6 +43,7 @@ static void show_laptopman()
   {
   // detect platform...
   case PlatformTypeAplite:
+  case PlatformTypeDiorite:
     // monochrome pebbles
     mono_laptopman = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MONO_LAPTOPMAN); // create bitmap from image resource
     bitmap_layer_set_bitmap(bitmap_layer, mono_laptopman);                           // set bitmap layer image
@@ -127,6 +127,7 @@ void tap_handler(AccelAxisType accel, int32_t direction)
     {
     // detect platform...
     case PlatformTypeAplite:
+    case PlatformTypeDiorite:
       // monochrome pebbles
       mono_angry = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MONO_ANGRY); // create bitmap from image resource
       bitmap_layer_set_bitmap(bitmap_layer, mono_angry);                       // set bitmap layer image
