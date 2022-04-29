@@ -1,5 +1,7 @@
 # LaptopmanFace
-A watch face for Pebble watches starring my signature "Laptopman" avatar
+A watch face for Pebble watches starring my signature "Laptopman" avatar. Shake to alternate between your laptop pal and his evil twin!
+
+**Note:** This app was written in C, a language that I am not super familiar with. As a result, the code might not be as elegant as it could be, but I'm working on it!
 
 ## Screenshots
 ![Mono](screenshots/color_nice.png)
