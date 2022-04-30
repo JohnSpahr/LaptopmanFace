@@ -3,7 +3,7 @@
 
   Created by John Spahr (johnspahr.org)
 
-  Thanks to: "PebbleFaces" example, the watch face creation guide hosted by Rebble, the Rebble team, and all of you for using my stupid creation.
+  Thanks to: "PebbleFaces" example, the watch face creation guide hosted by Rebble, the Rebble team, and all of you for using my first watch face!
 
   One more thing: The Laptopman is my own work of art, perhaps even my magnum opus. It's pretty great.
 */
@@ -13,10 +13,10 @@ static Window *window;            // window object
 static TextLayer *s_time_layer;   // the clock (text layer)
 static BitmapLayer *bitmap_layer; // layer for display the bitmap
 static GBitmap *current_bmp;      // bitmap object
-static GBitmap *mono_laptopman;  // mono laptopman bitmap
-static GBitmap *color_laptopman; // color laptopman bitmap
-static GBitmap *mono_angry;      // mono angry laptopman bitmap
-static GBitmap *color_angry;     // color angry laptopman bitmap
+static GBitmap *mono_laptopman;   // mono laptopman bitmap
+static GBitmap *color_laptopman;  // color laptopman bitmap
+static GBitmap *mono_angry;       // mono angry laptopman bitmap
+static GBitmap *color_angry;      // color angry laptopman bitmap
 
 static void update_time()
 {
@@ -45,32 +45,58 @@ static void show_laptopman()
   case PlatformTypeAplite:
   case PlatformTypeDiorite:
     // monochrome pebbles
-    mono_laptopman = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MONO_LAPTOPMAN); // create bitmap from image resource
-    bitmap_layer_set_bitmap(bitmap_layer, mono_laptopman);                           // set bitmap layer image
-
-    if (current_bmp)
+    if (!mono_laptopman)
     {
-      // destroy current bitmap object if it exists
-      gbitmap_destroy(current_bmp);
-      current_bmp = NULL;
+      mono_laptopman = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MONO_LAPTOPMAN); // create bitmap from image resource if it doesn't exist yet
     }
-
-    current_bmp = mono_laptopman; // update current bitmap object
+    bitmap_layer_set_bitmap(bitmap_layer, mono_laptopman); // set bitmap layer image
+    current_bmp = mono_laptopman;                          // update current bitmap object
     break;
   case PlatformTypeBasalt:
     // color pebbles
-    color_laptopman = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_COLOR_LAPTOPMAN); // create bitmap from image resource
-    bitmap_layer_set_bitmap(bitmap_layer, color_laptopman);                            // set bitmap layer image
-
-    if (current_bmp)
+    if (!color_laptopman)
     {
-      // destroy current bitmap object if it exists
-      gbitmap_destroy(current_bmp);
-      current_bmp = NULL;
+      color_laptopman = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_COLOR_LAPTOPMAN); // create bitmap from image resource if it doesn't exist yet
     }
-
-    current_bmp = color_laptopman; // update current bitmap object
+    bitmap_layer_set_bitmap(bitmap_layer, color_laptopman); // set bitmap layer image
+    current_bmp = color_laptopman;                          // update current bitmap object
     break;
+  }
+}
+
+void tap_handler(AccelAxisType accel, int32_t direction)
+{
+  // when watch is shaken, determine which bitmap is showing
+  if (current_bmp != mono_laptopman && current_bmp != color_laptopman)
+  {
+    show_laptopman(); // show default laptopman bitmap if angry bitmap is currently showing
+  }
+  else
+  {
+    // otherwise, show angry laptopman bitmap
+    switch (PBL_PLATFORM_TYPE_CURRENT)
+    {
+    // detect platform...
+    case PlatformTypeAplite:
+    case PlatformTypeDiorite:
+      // monochrome pebbles
+      if (!mono_angry)
+      {
+        mono_angry = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MONO_ANGRY); // create bitmap from image resource if it doesn't exist yet
+      }
+      bitmap_layer_set_bitmap(bitmap_layer, mono_angry); // set bitmap layer image
+      current_bmp = mono_angry;                          // update current bitmap object
+      break;
+    case PlatformTypeBasalt:
+      // color pebbles
+      if (!color_angry)
+      {
+        color_angry = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_COLOR_ANGRY); // create bitmap from image resource if it doesn't exist yet
+      }
+      bitmap_layer_set_bitmap(bitmap_layer, color_angry); // set bitmap layer image
+      current_bmp = color_angry;                          // update current bitmap object
+      break;
+    }
   }
 }
 
@@ -106,57 +132,14 @@ static void window_unload(Window *window)
   // get rid of bitmap layer
   bitmap_layer_destroy(bitmap_layer);
 
-  // dispose of bitmap itself
-  gbitmap_destroy(current_bmp);
+  // dispose of bitmaps if they exist...
+  if (current_bmp)
+  {
+    gbitmap_destroy(current_bmp); // current bitmap
+  }
 
-  // destroy time layer
+  // destroy time text layer
   text_layer_destroy(s_time_layer);
-}
-
-void tap_handler(AccelAxisType accel, int32_t direction)
-{
-  // when watch is shaken, determine which bitmap is showing
-  if (current_bmp != mono_laptopman && current_bmp != color_laptopman)
-  {
-    show_laptopman(); // show default laptopman bitmap if angry bitmap is currently showing
-  }
-  else
-  {
-    // otherwise, show angry laptopman bitmap
-    switch (PBL_PLATFORM_TYPE_CURRENT)
-    {
-    // detect platform...
-    case PlatformTypeAplite:
-    case PlatformTypeDiorite:
-      // monochrome pebbles
-      mono_angry = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MONO_ANGRY); // create bitmap from image resource
-      bitmap_layer_set_bitmap(bitmap_layer, mono_angry);                       // set bitmap layer image
-
-      if (current_bmp)
-      {
-        // destroy current bitmap object if it exists
-        gbitmap_destroy(current_bmp);
-        current_bmp = NULL;
-      }
-
-      current_bmp = mono_angry; // update current bitmap object
-      break;
-    case PlatformTypeBasalt:
-      // color pebbles
-      color_angry = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_COLOR_ANGRY); // create bitmap from image resource
-      bitmap_layer_set_bitmap(bitmap_layer, color_angry); // set bitmap layer image
-
-      if (current_bmp)
-      {
-        // destroy current bitmap object if it exists
-        gbitmap_destroy(current_bmp);
-        current_bmp = NULL;
-      }
-
-      current_bmp = color_angry; // update current bitmap object
-      break;
-    }
-  }
 }
 
 static void init(void)
