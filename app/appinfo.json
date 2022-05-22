@@ -3,12 +3,13 @@
     "shortName": "Laptopman",
     "longName": "Laptopman Face",
     "companyName": "John Spahr",
-    "versionCode": 4,
-    "versionLabel": "1.3",
+    "versionCode": 5,
+    "versionLabel": "1.4",
     "sdkVersion": "3",
     "targetPlatforms": [
         "aplite",
         "basalt",
+        "chalk",
         "diorite"
     ],
     "watchapp": {
@@ -40,6 +41,16 @@
             {
                 "file": "images/color_angry.PNG",
                 "name": "IMAGE_COLOR_ANGRY",
+                "type": "png"
+            },
+            {
+                "file": "images/round_laptopman.PNG",
+                "name": "IMAGE_ROUND_LAPTOPMAN",
+                "type": "png"
+            },
+            {
+                "file": "images/round_angry.PNG",
+                "name": "IMAGE_ROUND_ANGRY",
                 "type": "png"
             }
         ]
