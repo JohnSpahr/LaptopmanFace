@@ -4,8 +4,9 @@ A watch face for Pebble watches starring my signature "Laptopman" avatar. Shake 
 **Note:** This app was written in C, a language that I am not super familiar with. As a result, the code might not be as elegant as it could be, but I'm working on it!
 
 ## Screenshots
-![Mono](screenshots/color_nice.png)
-![Color](screenshots/color_evil.png)
+![Round](screenshots/mono.png)
+![Color](screenshots/color.png)
+![Round](screenshots/round.png)
 
 ## Supported Devices
 - As of v1.4, all of the Pebbles!
