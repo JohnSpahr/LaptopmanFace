@@ -1,5 +1,5 @@
 # LaptopmanFace
-A watch face for Pebble watches starring my signature "Laptopman" avatar. Disconnecting the watch from your phone will replace your laptop pal with his evil twin. Enjoy!
+A watch face for Pebble watches starring my signature "Laptopman" avatar. Disconnecting the watch from your phone replaces your laptop pal with his evil twin. It's fairly simple, but it's still really neat.
 
 **Note:** This app was written in C, a language that I am not super familiar with. As a result, the code might not be as elegant as it could be, but I'm working on it!
 
