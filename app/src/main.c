@@ -176,12 +176,13 @@ static void init(void)
 
   window_stack_push(window, true); // push window
 
-  accel_tap_service_subscribe(tap_handler); // set tap_handler function as handler for watch shake
-
   update_time(); // register with TickTimerService
 
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler); // set tick_handler function as time handler (start keeping time, essentially. kinda important on a watch.)
 
+  // register for Bluetooth connection updates
+  connection_service_subscribe((ConnectionHandlers){
+      .pebble_app_connection_handler = bluetooth_callback});
 }
 
 static void deinit(void)
