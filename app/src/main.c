@@ -3,7 +3,7 @@
 
   Created by John Spahr (johnspahr.org)
 
-  Thanks to: "PebbleFaces" example, the watch face creation guide hosted by Rebble, the Rebble team, Robert Smith, and all of you for using my first watch face!
+  Thanks to: "PebbleFaces" example, the watchface creation guide hosted by Rebble, the Rebble team, Robert Smith, and all of you for using my first watchface!
 
   One more thing: The Laptopman is my own work of art, perhaps even my magnum opus. It's pretty great.
 */
@@ -11,7 +11,8 @@
 
 static Window *window;            // window object
 static TextLayer *s_time_layer;   // the clock (text layer)
-static BitmapLayer *bitmap_layer; // layer for display the bitmap
+static BitmapLayer *bitmap_layer; // layer to display the bitmap
+static Layer *s_battery_layer;    // layer to display battery level
 static GBitmap *current_bmp;      // current bitmap object
 static GBitmap *mono_laptopman;   // mono laptopman bitmap
 static GBitmap *color_laptopman;  // color laptopman bitmap
@@ -19,6 +20,8 @@ static GBitmap *round_laptopman;  // round laptopman bitmap
 static GBitmap *mono_angry;       // mono angry laptopman bitmap
 static GBitmap *color_angry;      // color angry laptopman bitmap
 static GBitmap *round_angry;      // round angry laptopman bitmap
+static GFont s_time_font;         // custom font
+static int s_battery_level;       // battery level value
 
 static void update_time()
 {
@@ -36,6 +39,32 @@ static void update_time()
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed)
 {
   update_time(); // update the time on timer tick
+}
+
+static void battery_callback(BatteryChargeState state)
+{
+  // record the new battery level
+  s_battery_level = state.charge_percent;
+
+  // update meter
+  layer_mark_dirty(s_battery_layer);
+}
+
+static void battery_update_proc(Layer *layer, GContext *ctx)
+{
+  // update battery layer to display watch battery life...
+  GRect bounds = layer_get_bounds(layer);
+
+  // find the width of the bar (total width = 55px)
+  int width = (s_battery_level * 55) / 100;
+
+  // draw the background
+  graphics_context_set_fill_color(ctx, GColorBlack);
+  graphics_fill_rect(ctx, bounds, 0, GCornerNone);
+
+  // draw the bar
+  graphics_context_set_fill_color(ctx, GColorWhite);
+  graphics_fill_rect(ctx, GRect(0, 0, width, bounds.size.h), 0, GCornerNone);
 }
 
 static void show_laptopman()
@@ -133,19 +162,29 @@ static void window_load(Window *window)
   bitmap_layer = bitmap_layer_create(bounds);                          // create bitmap layer
   layer_add_child(window_layer, bitmap_layer_get_layer(bitmap_layer)); // add bitmap layer to window
 
+  // create GFont for clock
+  s_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_OSWALD_26));
+
   // create clock text layer...
   s_time_layer = text_layer_create(
       GRect(PBL_IF_COLOR_ELSE(3, 0), PBL_IF_ROUND_ELSE(26, 24), bounds.size.w, bounds.size.h));
 
   // time text layer setup...
-  text_layer_set_background_color(s_time_layer, GColorClear);                        // set clear background color
-  text_layer_set_text_color(s_time_layer, GColorWhite);                              // white text color
-  text_layer_set_text(s_time_layer, "00:00");                                        // set text to 00:00
-  text_layer_set_font(s_time_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD)); // set font to Gothic, 28pt, bold
-  text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);                 // center align text
+  text_layer_set_background_color(s_time_layer, GColorClear);        // set clear background color
+  text_layer_set_text_color(s_time_layer, GColorWhite);              // white text color
+  text_layer_set_text(s_time_layer, "00:00");                        // set text to 00:00
+  text_layer_set_font(s_time_layer, s_time_font);                    // set font to Oswald, 26pt, medium
+  text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter); // center align text
 
   // add clock text layer to window layer
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer));
+
+  // create battery meter layer
+  s_battery_layer = layer_create(GRect(PBL_IF_ROUND_ELSE(64, 48), PBL_IF_ROUND_ELSE(56, 54), PBL_IF_ROUND_ELSE(57, 53), 2)); // adjust position and size based on model of Pebble
+  layer_set_update_proc(s_battery_layer, battery_update_proc);                                                               // start battery meter update process
+
+  // add to window
+  layer_add_child(window_get_root_layer(window), s_battery_layer);
 
   // load default laptopman bitmap
   show_laptopman();
@@ -164,6 +203,12 @@ static void window_unload(Window *window)
 
   // destroy time text layer
   text_layer_destroy(s_time_layer);
+
+  // destroy battery layer
+  layer_destroy(s_battery_layer);
+
+  // unload GFont
+  fonts_unload_custom_font(s_time_font);
 }
 
 static void init(void)
@@ -183,6 +228,12 @@ static void init(void)
   // register for Bluetooth connection updates
   connection_service_subscribe((ConnectionHandlers){
       .pebble_app_connection_handler = bluetooth_callback});
+
+  // register for battery level updates
+  battery_state_service_subscribe(battery_callback);
+
+  // ensure battery level is displayed from the start
+  battery_callback(battery_state_service_peek());
 }
 
 static void deinit(void)

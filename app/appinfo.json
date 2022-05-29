@@ -1,10 +1,10 @@
 {
-    "uuid": "a7a264e5-4a41-4f92-a791-df46232bb02d",
-    "shortName": "Laptopman",
-    "longName": "Laptopman Face",
+    "uuid": "d5e294a5-4a41-4f92-b781-ee46252fb02d",
+    "shortName": "Laptopman 2.0",
+    "longName": "Laptopman Face 2.0",
     "companyName": "John Spahr",
-    "versionCode": 5,
-    "versionLabel": "1.4",
+    "versionCode": 6,
+    "versionLabel": "2.0",
     "sdkVersion": "3",
     "targetPlatforms": [
         "aplite",
@@ -52,6 +52,12 @@
                 "file": "images/round_angry.PNG",
                 "name": "IMAGE_ROUND_ANGRY",
                 "type": "png"
+            },
+            {
+                "type": "font",
+                "name": "FONT_OSWALD_26",
+                "file": "fonts/Oswald-Medium.ttf",
+                "compatibility": "2.7"
             }
         ]
     }
