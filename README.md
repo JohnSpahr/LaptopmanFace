@@ -9,7 +9,7 @@ A watch face for Pebble watches starring my signature "Laptopman" avatar. Discon
 ![Round](screenshots/round.png)
 
 ## Supported Devices
-- As of v1.4, all of the Pebbles!
+- As of v1.4, all of the (released) Pebbles!
 
 ## Check It Out!
 Want to try it out? If so, you can get the PBW from the [releases page](https://github.com/johnspahr/laptopmanface/releases) or from [Rebble](https://apps.rebble.io/en_US/application/626b1ef27ca61400094ed7e4).
