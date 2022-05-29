@@ -3,8 +3,8 @@
     "shortName": "Laptopman 2.0",
     "longName": "Laptopman Face 2.0",
     "companyName": "John Spahr",
-    "versionCode": 6,
-    "versionLabel": "2.0",
+    "versionCode": 7,
+    "versionLabel": "2.1",
     "sdkVersion": "3",
     "targetPlatforms": [
         "aplite",

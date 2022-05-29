@@ -180,7 +180,7 @@ static void window_load(Window *window)
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer));
 
   // create battery meter layer
-  s_battery_layer = layer_create(GRect(PBL_IF_ROUND_ELSE(64, 48), PBL_IF_ROUND_ELSE(56, 54), PBL_IF_ROUND_ELSE(57, 53), 2)); // adjust position and size based on model of Pebble
+  s_battery_layer = layer_create(GRect(PBL_IF_ROUND_ELSE(64, 48), PBL_IF_ROUND_ELSE(56, 54), PBL_IF_ROUND_ELSE(57, 53), 4)); // adjust position and size based on model of Pebble
   layer_set_update_proc(s_battery_layer, battery_update_proc);                                                               // start battery meter update process
 
   // add to window
