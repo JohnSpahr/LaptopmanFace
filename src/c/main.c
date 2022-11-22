@@ -166,8 +166,7 @@ static void window_load(Window *window)
   s_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_OSWALD_26));
 
   // create clock text layer...
-  s_time_layer = text_layer_create(
-      GRect(PBL_IF_COLOR_ELSE(3, 0), PBL_IF_ROUND_ELSE(26, 24), bounds.size.w, bounds.size.h));
+  s_time_layer = text_layer_create(GRect(0, PBL_IF_ROUND_ELSE(26, 24), bounds.size.w, bounds.size.h));
 
   // time text layer setup...
   text_layer_set_background_color(s_time_layer, GColorClear);        // set clear background color
